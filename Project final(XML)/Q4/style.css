@@ -1,0 +1,61 @@
+* {
+  font-family: sans-serif;
+  text-decoration: none;
+  outline: none;
+}
+body {
+  background-color: skyblue;
+}
+.block {
+  display: block;
+  align-self: center;
+  text-align: center;
+}
+#title {
+  margin-top: 100px;
+  font-size: xx-large;
+  font-weight: bold;
+  color: indianred;
+}
+#country {
+  margin: 20px;
+  padding: 5px;
+  text-decoration: none;
+  font-size: large;
+  border-radius: 20px;
+}
+#country:hover {
+  background-color: white;
+}
+#country:active {
+  color: gray;
+}
+.btn {
+  background-color: green;
+  color: honeydew;
+  padding: 10px;
+  border-radius: 25px;
+}
+.btn:hover {
+  background-color: blue;
+  color: black;
+}
+#demo {
+  text-align: center;
+}
+.styletable {
+  margin-left: auto;
+  margin-right: auto;
+  background-color: darkcyan;
+  word-spacing: 2px;
+}
+#tablehead {
+  background-color: darkgoldenrod;
+  color: blanchedalmond;
+}
+th {
+  padding: 10px;
+}
+td {
+  padding: 8px;
+}

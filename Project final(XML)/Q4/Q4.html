@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head> 
+    <title>Q4</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() 
+{
+   $(".btn").click(function() 
+   {
+       $.getJSON("country-data.json",function(json)
+       {
+            console.log(json);
+            var countryname = $("#country").val() ;
+            var table = "";
+            table += '<table border="2" class=styletable><tr id=tablehead><th>Region</th><th>Capital</th><th>Currency_code</th><th>Language_native_name</th></tr>';
+            for(var i=0; i < json.length; i++)
+            {
+                
+                if(json[i].name == $("#country").val())
+                {
+                    table += "<tr>";
+                    table += "<td>"+json[i].region+"</td>"; 
+                    table += "<td>"+json[i].capital+"</td>";
+                    table += "<td>"+ json[i].currencies[0].code+"</td>";
+                    table += "<td>"+ json[i].languages[0].nativeName+"</td>";           
+                    table += "</tr></table>";
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            $("#demo").html(table);
+       }).fail(function() 
+                {
+                    alert( "Error fetching Json data" );
+                });
+   });
+});		
+</script>
+</head>
+<body>
+    <div class="block">
+        <label id="title">Enter A Country Name<label/><br>
+        <input type="text" id="country"/> <br>
+        <button type="submit" class="btn" >Get Data</button>
+    </div>
+    <br>
+    <p id="demo"></p>
+</body>
+</html>

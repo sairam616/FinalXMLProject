@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<head>
+    <title>Question-1</title>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid lightseagreen;
+        }
+        th{
+            background-color: darkred;
+            color: lightseagreen;
+        }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "Country.xml",
+                dataType: "xml",
+                success: function (xml) {
+                    var output ="";
+                    $(xml).find('country').each(function () {
+                        output += "<tr>";
+                        output += "<td>" + $(this).children('name').text() + "</td>";
+                        output += "<td>" + $(this).attr('capital') + "</td>"
+                        if($(this).find('unemployment').text()==""){
+                        output += "<td>" + "N/A" + "</td>";
+                        } else {
+                            output += "<td>" + $(this).find('unemployment').text() + "</td>";
+                        }
+                        if($(this).find('gdp_total').text()==""){
+                        output += "<td>" + "N/A" + "</td>";
+                        } else {
+                            output += "<td>" + $(this).find('gdp_total').text() + "</td>";
+                        }
+                        output += "</tr>";
+                    });
+                    myFunction(output);
+                },
+                error: function () { alert('Error!') }
+            });
+        });
+        function myFunction(result) {
+            var output = "";
+            output += "<table border=1>";
+            output += "<tr>";
+            output += "<th>" + 'Country name' + "</th>";
+            output += "<th>" + 'Capital' + "</th>";
+            output += "<th>" + 'Unemployment' + "</th>";
+            output += "<th>" + 'Total GDP' + "</th>";
+            output += "</tr>";
+            output += "<tr>";
+            output += result;
+            output += " </table>";
+            document.getElementById("demo").innerHTML = output;
+        };
+    </script>
+</head>
+
+<body>
+   <p id="demo"></p>
+</body>
+
+</html>

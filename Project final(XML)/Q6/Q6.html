@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head> 
+    <title> Q6 </title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() 
+{
+   $(".btn").click(function() 
+   {
+        var countryname = $("#country").val() ;
+       $.getJSON("https://restcountries.eu/rest/v2/name/"+countryname+"?fullText=true",function(json)
+       {
+           console.log(json);
+           var countryname = $("#country").val();
+            var table = " ", borders = " ";
+            table += '<table border="2" class="styletable"><tr id="tablehead"><th>Country Name</th><th>Region</th><th>Flag</th><th>Native Name</th><th>Area</th><th>ExchangeRate(vs Euro)</th><th>Name of the Neighbour Countries</th></tr>';
+            for(var i=0; i < json.length; i++)
+            {
+                
+                table += "<tr>";
+                table += "<td>"+json[i].name+"</td>"; 
+                table += "<td>"+ json[i].region+"</td>";
+                table += "<td>"+ "<img id=image src="+ json[i].flag +"></td>";
+                table += "<td>"+ json[i].nativeName+"</td>";
+                table += "<td>"+ json[i].area+"</td>";
+                table += "<td id=currency></td>";
+                table += "<td id=border></td>";
+                table += "</table>";
+                var code = json[i].currencies[0].code;
+                $.getJSON("http://data.fixer.io/api/latest?access_key=2a9a6664ef5207e7e351fec615235544",function(exchangerates)
+                {
+                    $.each(exchangerates.rates,function(countrycode,rate)
+                    {
+                        if(countrycode == code)
+                        {
+                            $("#currency").html(rate);
+                        }
+                    });
+                }).fail(function()
+                {
+                    alert("Error loading the Exchange rates api");
+                });
+
+                var flag =0;
+                $.each(json[i].borders,function(j,code)
+                {
+                    var length = json[i].borders.length;
+                    
+                    $.getJSON("https://restcountries.eu/rest/v2/alpha/"+code,function(jsonBorders)
+                    {
+                        borders +=  jsonBorders.name;
+                        flag++;
+                        if(flag < length)
+                        {
+                            borders += ",";
+                        }
+                        if(flag == length)
+                        {
+                            borders += ".";
+                        }
+                        $("#border").html(borders);
+                    }).fail(function() 
+                        {
+                            alert( "Error fetching Json Border data" );
+                        });
+                }); 
+            }
+            $("#demo").html(table);
+       }).fail(function() 
+            {
+                alert( "Error fetching Json data" );
+            });
+   });
+});		
+
+</script>
+</head>
+<body>
+    <div class="block">
+        <label id="title">Enter A Country Name<label/><br>
+        <input type="text" id="country"/> <br>
+        <button type="submit" class="btn" >Get Data</button>
+    </div>
+    <br>
+    <p id="demo"></p>
+</body>
+</html>

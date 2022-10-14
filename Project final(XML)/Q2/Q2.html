@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head> 
+    <title> Q2</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() 
+{
+   $(".btn").click(function() 
+   {
+       $.getJSON("Country.json",function(json)
+       {
+           console.log(json);
+           var countryname = $("#country").val() ;
+            var table = "";
+            
+            table += '<table border="2" class=styletable><tr id=tablehead><th>Province Name</th><th>Local Name</th><th>Population(2011)</th><th>No of cities in the province</th></tr>';
+            for(var i=0; i < json.country.length; i++)
+            {
+                if(json.country[i].name == countryname)
+                {
+                    //If province is Present
+                    if(json.country[i].province != null)
+                    {
+                        for(var j=0; j<json.country[i].province.length; j++)
+                        {
+                            table += "<tr>";
+                            table += "<td>"+json.country[i].province[j].name+"</td>"; 
+                            
+                            //LocalName of the Province
+                            if(json.country[i].province[j].localname != null)
+                            {
+                                table += "<td>"+json.country[i].province[j].localname+"</td>";
+                            }
+                            else{
+                                table += "<td>No Local Name</td>";
+                            }
+                            
+                            if(json.country[i].province[j].population != null)
+                            {
+                                var populationFlag =0;
+                                //condition for province population array
+                                if(json.country[i].province[j].population.length >= 1)
+                                {
+                                    for(var k=0; k<json.country[i].province[j].population.length; k++)
+                                    {
+                                        if(json.country[i].province[j].population[k]["@year"] == "2011"  )
+                                        {
+                                            table += "<td>"+ json.country[i].province[j].population[k]["#text"]+"</td>";
+                                            populationFlag = 1;
+                                        }
+                                        else
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                }
+                                //condition for single province population element
+                                else
+                                {
+                                    if(json.country[i].province[j].population["@year"] == "2011"  )
+                                        {
+                                            table += "<td>"+ json.country[i].population["#text"]+"</td>";
+                                            populationFlag =1;
+                                        }
+                                        else
+                                            continue;
+                                }
+                            }
+                            else
+                            {
+                                table += "<td>No Population in this province</td>";
+                            }
+
+                            if(populationFlag != 1)
+                            {
+                                table += "<td>No Population in 2011</td>";
+                            }
+
+                            var pcitycount = 0;
+                            if(json.country[i].province[j].city != null)
+                            {
+                                if(json.country[i].province[j].city.length >= 1)
+                                {
+                                    for(var k=0; k<json.country[i].province[j].city.length;k++)
+                                    {
+                                        pcitycount++;
+                                    }
+                                }
+                                else
+                                {
+                                    pcitycount =1;
+                                }
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                            table += "<td>"+ pcitycount +"</td>";
+                            table += "</tr>";
+                        }
+                    }
+
+                    //Countries with No Province
+                    else
+                    {
+                        table += "<tr>";
+                        //No province in country
+                        table += "<td>No Province in this Country</td>"; 
+                        
+                        //Printing local name of country
+                        if(json.country[i].localname != null)
+                        {
+                            table += "<td>"+json.country[i].localname+"</td>";
+                        }
+                        else  
+                        {
+                            table += "<td>No Local Name</td>";
+                        }
+
+                        //Population of country without province
+                        
+                        if(json.country[i].population != null)
+                        {
+                            var populationFlag =0;
+
+                            //condition for country population array
+                            if(json.country[i].population.length >= 1)
+                            {
+                                for(var j=0; j<json.country[i].population.length; j++)
+                                {
+                                    if(json.country[i].population[j]["@year"] == "2011"  )
+                                    {
+                                        table += "<td>"+ json.country[i].population[j]["#text"]+"</td>";
+                                        populationFlag =1;
+                                    }
+                                    else
+                                        continue;
+                                }
+                            }
+                            //condition for single country population element
+                            else
+                            {
+                                if(json.country[i].population["@year"] == "2011"  )
+                                    {
+                                        table += "<td>"+ json.country[i].population["#text"]+"</td>";
+                                        populationFlag =1;
+                                    }
+                                    else
+                                        continue;
+                            }
+                        }
+                        //No populatin in country
+                        else
+                        {
+                            table += "<td>No Population at all</td>";
+                        }
+
+                        //No Population for 2011
+                        if(populationFlag != 1)
+                        {
+                            table += "<td>No Population in 2011</td>";
+                        }
+
+                        var ccitycount=0;
+                        if(json.country[i].city != null)
+                        {
+                            if(json.country[i].city.length >= 1)
+                            {
+                                for(var k=0; k<json.country[i].city.length;k++)
+                                {
+                                    ++ccitycount;
+                                }
+                            }
+                            else
+                            {
+                                ccitycount =1;
+                            }
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                        table += "<td>"+ccitycount+" Cities {In country}</td>";
+                        table += "</tr>";
+                    }
+                    
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            table += "</table>";
+            $("#demo").html(table);
+       }).fail(function() 
+                {
+                    alert( "Error fetching Json data" );
+                });
+   });
+});		
+</script>
+</head>
+<body>
+    <div class="block">
+        <label id="title">Enter A Country Name<label/><br>
+        <input type="text" id="country"/> <br>
+        <button type="submit" class="btn" >Get Data</button>
+    </div>
+    <br>
+    <p id="demo"></p>
+</body>
+</html>

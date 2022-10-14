@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() 
+{
+       $.getJSON("sample.json",function(myObj)
+       {
+           
+        		
+        console.log(myObj.friends[0].fname);
+
+
+        console.log(myObj["friends"][0].fname);
+        	
+        console.log(myObj["friends"]["0"]["fname"]);
+       }).fail(function() 
+                {
+                    alert( "Error fetching Json data" );
+                });
+});		
+</script>
+</head>
+<body>
+
+</body>
+</html>

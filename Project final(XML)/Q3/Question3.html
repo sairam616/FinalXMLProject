@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Question-2</title>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid lightseagreen;
+        }
+        th{
+            background-color: darkred;
+            color: lightseagreen;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+      var output = "";
+      $(document).ready(function () {
+        $.ajax({
+          url:
+            "http://data.fixer.io/api/latest?access_key=2a9a6664ef5207e7e351fec615235544",
+            success: function (result) {
+            console.log(result);
+            output += "<table border=1><tr><th>Country </th><th> Rate</th></tr>";
+            $.each(result.rates, function (country, rate) {
+              output += "<tr>";
+              output += "<td>" + country + "</td>";
+              output += "<td>" + rate + "</td>";
+              output += "</tr>";
+            });
+            output += "</table>";
+            $("#dOut").html(output);
+          },
+          error: function () {
+            alert("Error!");
+          },
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <p id="dOut"></p>
+  </body>
+</html>

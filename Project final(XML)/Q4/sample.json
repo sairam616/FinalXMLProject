@@ -1,0 +1,29 @@
+{
+    "friends": [
+        {
+            "fname": "alex",
+            "lname": "gate",
+            "email": "alex.gate"
+        },
+        {
+            "fname": "alex",
+            "lname": "gate",
+            "email": "alex.gate"
+        },
+        {
+            "fname": "alex",
+            "lname": "gate",
+            "email": "alex.gate"
+        },
+        {
+            "fname": "alex",
+            "lname": "gate",
+            "email": "alex.gate"
+        },
+        {
+            "fname": "alex",
+            "lname": "gate",
+            "email": "alex.gate"
+        }
+    ]
+}
